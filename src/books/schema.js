@@ -10,9 +10,14 @@ export const typeDefs = `#graphql
         book(id: ID!): Book
     }
 
+    type DeleteBookPayload {
+        success: Boolean!
+        books: [Book!]!
+    }
+
     type Mutation {
         addBook(title: String!, author: String!): Book!
         updateBook(id: ID!, title: String, author: String): Book
-        deleteBook(id: ID!): Boolean!
+        deleteBook(id: ID!): DeleteBookPayload
     }
 `;

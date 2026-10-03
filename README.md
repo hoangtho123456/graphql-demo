@@ -18,8 +18,9 @@ The server starts at http://localhost:4000. Open that URL in a browser to use Ap
 ## Project structure
 
 ```
-server.js              Creates the Apollo Server and merges all modules
+server.js              Creates and starts the Apollo Server
 src/
+  main-graphql.js      Collects the typeDefs and resolvers of every module
   books/
     schema.js          Book type, queries and mutations
     resolvers.js       Logic for each book query and mutation
@@ -90,11 +91,18 @@ mutation {
 
 ### Delete a book
 
-Returns `true` if the book was deleted and `false` if no book has that id.
+Returns a `DeleteBookPayload` with two fields: `success` is `true` if the book was deleted and `false` if no book has that id, and `books` is the list of books remaining.
 
 ```graphql
 mutation {
-  deleteBook(id: "1")
+  deleteBook(id: "1") {
+    success
+    books {
+      id
+      title
+      author
+    }
+  }
 }
 ```
 
@@ -158,11 +166,18 @@ mutation {
 
 ### Delete a user
 
-Returns `true` if the user was deleted and `false` if no user has that id.
+Returns a `DeleteUserPayload` with two fields: `success` is `true` if the user was deleted and `false` if no user has that id, and `users` is the list of users remaining.
 
 ```graphql
 mutation {
-  deleteUser(id: "1")
+  deleteUser(id: "1") {
+    success
+    users {
+      id
+      name
+      email
+    }
+  }
 }
 ```
 
@@ -197,5 +212,5 @@ Put the values in the Variables panel of Apollo Sandbox:
 ## Adding a new module
 
 1. Create a folder under `src/` with `schema.js`, `resolvers.js` and `mockdata.js`, following the `books` folder.
-2. Import its `typeDefs` and `resolvers` in `server.js`.
-3. Add them to the `typeDefs` and `resolvers` arrays passed to `ApolloServer`.
+2. Import its `typeDefs` and `resolvers` in `src/main-graphql.js`.
+3. Add them to the `TYPE_DEFS` and `RESOLVERS` arrays exported from that file. `server.js` needs no change.

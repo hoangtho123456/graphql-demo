@@ -32,9 +32,15 @@ export const resolvers = {
         },
         deleteUser: (_, { id }) => {
             const userIndex = users.findIndex(user => user.id === id);
-            if (userIndex === -1) return false;
+            if (userIndex === -1) return {
+                success: false,
+                users: [...users]
+            };
             users.splice(userIndex, 1);
-            return true;
+            return {
+                success: true,
+                users: [...users]
+            };
         }
     }
 };

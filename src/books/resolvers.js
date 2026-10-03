@@ -30,9 +30,15 @@ export const resolvers = {
         },
         deleteBook: (_, { id }) => {
             const bookIndex = books.findIndex(book => book.id === id);
-            if (bookIndex === -1) return false;
+            if (bookIndex === -1) return {
+                success: false,
+                books: [...books]
+            };
             books.splice(bookIndex, 1);
-            return true;
+            return {
+                success: true,
+                books: [...books]
+            };
         }
     }
 };
